@@ -2,6 +2,7 @@ package com.tristanchanson.petshop.inventory;
 
 public class Product {
 
+    private Integer id;
     private String name;
     private Integer count;
     private Double cost;
@@ -12,6 +13,18 @@ public class Product {
         this.count = count;
         this.cost = cost;
         this.price = price;
+    }
+
+    public Product(Integer id, String name, Integer count, Double cost, Double price) {
+        this.id = id;
+        this.name = name;
+        this.count = count;
+        this.cost = cost;
+        this.price = price;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
@@ -33,7 +46,8 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", count=" + count +
                 ", cost=" + cost +
                 ", price=" + price +

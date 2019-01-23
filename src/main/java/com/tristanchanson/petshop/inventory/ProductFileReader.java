@@ -1,23 +1,29 @@
 package com.tristanchanson.petshop.inventory;
 
-import java.io.BufferedReader;
+import com.tristanchanson.petshop.inventory.data.DatabaseManager;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductFileReader {
 
-    private static final String PRODUCTS_FILE = "/products.csv";
+    private static final String PRODUCTS_FILE = "products.csv";
 
     public List<Product> read() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ProductFileReader.class.getResourceAsStream(PRODUCTS_FILE)))) {
-            return reader.lines()
+        try {
+            Path path = Paths.get(DatabaseManager.class.getClassLoader().getResource(PRODUCTS_FILE).toURI());
+            return Files.lines(path)
                     .map(s -> s.split(","))
                     .map(this::mapToProduct)
                     .collect(Collectors.toList());
-        } catch (IOException e) {
+        } catch (
+                IOException | URISyntaxException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();

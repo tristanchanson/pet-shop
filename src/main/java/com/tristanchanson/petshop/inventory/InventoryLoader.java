@@ -1,14 +1,16 @@
 package com.tristanchanson.petshop.inventory;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.tristanchanson.petshop.inventory.data.DatabaseManager;
+import com.tristanchanson.petshop.inventory.data.ProductDao;
+
 import java.util.List;
 
 public class InventoryLoader {
 
     private final ProductFileReader productFileReader = new ProductFileReader();
-    private final DatabaseManager databaseManager = DatabaseManager.openDatabase();
+    private final DatabaseManager databaseManager = new DatabaseManager();
     private final ProductResultSetPrinter productResultSetPrinter = new ProductResultSetPrinter();
+    private final ProductDao productDao = new ProductDao(databaseManager.getDataSource());
 
     public static void main(String[] args) {
         new InventoryLoader().run();
@@ -21,17 +23,12 @@ public class InventoryLoader {
 
         // Loop through products and insert into database
         for (Product product : products) {
-            databaseManager.insertProduct(product);
+            productDao.insert(product);
         }
 
         // Query all products from database and display results
-        ResultSet resultSet = databaseManager.findAllProducts();
-        productResultSetPrinter.displayResults(resultSet);
+        List<Product> productList = productDao.findAll();
+        productResultSetPrinter.displayResults(productList);
 
-        try {
-            resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

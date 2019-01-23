@@ -1,33 +1,20 @@
 package com.tristanchanson.petshop.inventory;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 public class ProductResultSetPrinter {
 
-    public void displayResults(ResultSet resultSet) {
+    public void displayResults(List<Product> products) {
 
-        try {
-            System.out.println("-----------------------------------------------------------------------------");
-            System.out.printf("%10s %30s %20s %5s %5s", "PRODUCT ID", "NAME", "COUNT", "COST", "PRICE");
-            System.out.println();
-            System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.printf("%10s %30s %20s %5s %5s", "PRODUCT ID", "NAME", "COUNT", "COST", "PRICE");
+        System.out.println();
+        System.out.println("-----------------------------------------------------------------------------");
 
-            while (resultSet.next()) {
-                // Retrieve by column name
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                int count = resultSet.getInt("count");
-                double cost = resultSet.getDouble("cost");
-                double price = resultSet.getDouble("price");
-
-                System.out.format("%10s %30s %20s %5s %5s",
-                        id, name, count, cost, price);
-                System.out.println();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        products.forEach(product -> {
+                    System.out.format("%10s %30s %20s %5s %5s", product.getId(), product.getName(), product.getCount(), product.getCost(), product.getPrice());
+                    System.out.println();
+                });
 
     }
 }
